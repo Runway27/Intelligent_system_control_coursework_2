@@ -1,16 +1,16 @@
 %NB: You will need to modify this script to match the names if the variables in
 %your dataset.
 clear all
-load Group12
+load Group03.mat
 whos
-Date=Date01;
+Date=Date07;
 % finding the index for start and end of different years in the dataset.
 s2014=find(year(Date)==2014,1,'first');
 f2016=find(year(Date)==2016,1,'last');
 s2017=find(year(Date)==2017,1,'first');
 f2018=find(year(Date)==2018,1,'last');
-X01train=X01(s2014:f2016,:);
-X01test=X01(s2017:f2018,:);
+X01train=X07(s2014:f2016,:);
+X01test=X07(s2017:f2018,:);
 Datetrain=Date(s2014:f2016,:);
 Datetest=Date(s2017:f2018,:);
 %%
@@ -21,8 +21,7 @@ ylabel('Load (MW)')
 title('TIME 01 = 00:30-01:00');
 %%
 figure(2) ; clf % temperature variables
-%v=2 current temperature; v=3-11 temperaure xhrs earlier; v= 12:18 average
-temperature over the last x hours
+%v=2 current temperature; v=3-11 temperaure xhrs earlier; v= 12:18 average temperature over the last x hours
 vsel=[2 5 12];
 plot(Datetrain,X01train(:,vsel))
 xlabel('Time (days)');
@@ -53,8 +52,17 @@ for v=2:36;
 plot(X01train(:,v),X01train(:,1),'.')
 xlabel(labels(v))
 ylabel(labels(1))
-r=corr(X01train(:,v),X01train(:,1)); %determines the correlation coefficeint
-between the variables.
+r=corr(X01train(:,v),X01train(:,1)); %determines the correlation coefficeint between the variables.
 title(sprintf('r = %1.3f',r));
-pause
+pause(4)
 end
+% Initialize an empty array to store the correlation coefficients
+correlations = zeros(1, 36);
+
+% Calculate the correlation for each variable with the first variable
+for v=2:36
+    correlations(v) = corr(X01train(:,v),X01train(:,1));
+end
+
+% Convert the array to a table for better visualization
+correlation_table = array2table(correlations', 'VariableNames', {'Correlation'}, 'RowNames', labels);
