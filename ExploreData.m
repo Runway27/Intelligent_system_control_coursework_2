@@ -57,3 +57,4 @@ r=corr(X01train(:,v),X01train(:,1)); %determines the correlation coefficeint
 between the variables.
 title(sprintf('r = %1.3f',r));
 pause
+end
