@@ -1,4 +1,4 @@
-%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR ONLY TEMPERATURE VARIABLES
+%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR ONLY CALENDAR RELATED VARIABLES
 clc;
 clear;
 
@@ -10,7 +10,7 @@ Xsel=X07(:,2:36);
 Ysel=X07(:,1);
 Date=Date07;
 Vnames=labels(2:36);
-Vnames(26)={'Sun durat*pot. sol. irrad.'}; 
+Vnames(26)={'Sun durat*pot. sol. irrad.'};   %shorten longer variable names if needed
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Prepare the data for variable selection and modelling
@@ -51,7 +51,7 @@ YTest=Y(s2017:f2018);
 %Select variables as input for the linar prediction model
 % y=a1*x1+a2*x2+ ...an*xn + a0     (ao =constant offset term)
 
-SelVar=[15, 16, 17, 18];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
+SelVar=[31, 32, 33];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
 SelVarNames=Vnames(SelVar);
 
 XoptTrain=[XTrain(:,SelVar) ones(size(YTrain))];  %vector of ones included for the offset term
