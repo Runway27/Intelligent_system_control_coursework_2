@@ -162,7 +162,6 @@ datetick('x', 'mmm-yyyy', 'keepticks'); % Format the x-axis labels to show month
 
 hold off;
 
-% Assuming the variables RMSETrainLinear, RMSEValLinear, RMSETestLinear, and vnames(SelVar) are defined as per your MATLAB code
 
 % Create a table with the data
 RESULT = table(vnames(SelVar)', RMSETrainLinear, RMSEValLinear, RMSETestLinear, 'VariableNames', {'Variable', 'Training_RMSE', 'Validation_RMSE', 'Test_RMSE'});
