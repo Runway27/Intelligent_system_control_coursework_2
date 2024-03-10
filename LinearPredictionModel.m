@@ -1,4 +1,4 @@
-%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR ONLY CALENDAR RELATED VARIABLES
+%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR WEATHER AND CALENDER RELATED VARIABLES
 clc;
 clear;
 
@@ -51,7 +51,7 @@ YTest=Y(s2017:f2018);
 %Select variables as input for the linar prediction model
 % y=a1*x1+a2*x2+ ...an*xn + a0     (ao =constant offset term)
 
-SelVar=[31, 32, 33];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
+SelVar=[32, 33, 19, 20];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
 SelVarNames=Vnames(SelVar);
 
 XoptTrain=[XTrain(:,SelVar) ones(size(YTrain))];  %vector of ones included for the offset term
