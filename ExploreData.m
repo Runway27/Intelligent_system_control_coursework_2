@@ -3,14 +3,14 @@
 clear all
 load Group03.mat
 whos
-Date=Date07;
+Date=Date33;
 % finding the index for start and end of different years in the dataset.
 s2014=find(year(Date)==2014,1,'first');
 f2016=find(year(Date)==2016,1,'last');
 s2017=find(year(Date)==2017,1,'first');
 f2018=find(year(Date)==2018,1,'last');
-X01train=X07(s2014:f2016,:);
-X01test=X07(s2017:f2018,:);
+X01train=X33(s2014:f2016,:);
+X01test=X33(s2017:f2018,:);
 Datetrain=Date(s2014:f2016,:);
 Datetest=Date(s2017:f2018,:);
 %%
