@@ -161,6 +161,7 @@ xticks(min(DateTest):calmonths(3):max(DateTest));
 datetick('x', 'mmm-yyyy', 'keepticks'); % Format the x-axis labels to show month and year
 
 hold off;
+
 % Assuming the variables RMSETrainLinear, RMSEValLinear, RMSETestLinear, and vnames(SelVar) are defined as per your MATLAB code
 
 % Create a table with the data
