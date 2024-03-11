@@ -74,7 +74,7 @@ RMSETest = [RMSETestADALINE, RMSETestModel2];
 T = table(models', RMSETrain', RMSETest', 'VariableNames', {'Model', 'RMSE_Train', 'RMSE_Test'})
 
 % Display the table
-disp(T)
+disp(T) 
 
 
 % Plotting the results
