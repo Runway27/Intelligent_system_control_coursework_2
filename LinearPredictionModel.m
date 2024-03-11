@@ -1,4 +1,4 @@
-%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR WEATHER AND CALENDER RELATED VARIABLES
+%% THIS CODE IS FOR THE LINEAR PREDICTION MODEL FOR WEATHER AND CALENDER RELATED VARIABLES OF X33
 clc;
 clear;
 
@@ -6,9 +6,9 @@ load Group03.mat  %load the dataset.
 
 %Select time of day to model and define the input and output variables
 
-Xsel=X07(:,2:36);
-Ysel=X07(:,1);
-Date=Date07;
+Xsel=X33(:,2:36);
+Ysel=X33(:,1);
+Date=Date33;
 Vnames=labels(2:36);
 Vnames(26)={'Sun durat*pot. sol. irrad.'};   %shorten longer variable names if needed
 
@@ -51,7 +51,7 @@ YTest=Y(s2017:f2018);
 %Select variables as input for the linar prediction model
 % y=a1*x1+a2*x2+ ...an*xn + a0     (ao =constant offset term)
 
-SelVar=[32, 33, 19, 20];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
+SelVar=[23, 29, 30, 35];  %Specify the index numbers of the variables you wish to include in the model (between 1 and 35)
 SelVarNames=Vnames(SelVar);
 
 XoptTrain=[XTrain(:,SelVar) ones(size(YTrain))];  %vector of ones included for the offset term
