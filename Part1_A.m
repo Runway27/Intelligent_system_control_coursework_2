@@ -1,5 +1,3 @@
-%NB: You will need to modify this script to match the names if the variables in
-%your dataset.
 clear all
 load Group03.mat
 whos
@@ -54,27 +52,15 @@ xlabel(labels(v))
 ylabel(labels(1))
 r=corr(X01train(:,v),X01train(:,1)); %determines the correlation coefficeint between the variables.
 title(sprintf('r = %1.3f',r));
-pause(4)
+pause(1)
 end
-% Initialize an empty array to store the correlation coefficients maxs, means and medians 
+% Initialize an empty array to store the correlation coefficients
 correlations = zeros(1, 36);
-mins = zeros(1, 36);
-maxs = zeros(1, 36);
-means = zeros(1, 36);
-medians = zeros(1, 36);
 
-% Calculate the correlation for each variable with the first variable and
-% min, max, mean and median for each variable
+% Calculate the correlation for each variable with the first variable
 for v=2:36
     correlations(v) = corr(X01train(:,v),X01train(:,1));
 end
-for v=1:36
-    mins(v) = min(X01train(:,v));
-    maxs(v) = max(X01train(:,v));
-    means(v) = mean(X01train(:,v));
-    medians(v) = median(X01train(:,v));
-end
+
 % Convert the array to a table for better visualization
-stats_table = array2table([correlations', mins', maxs', means', medians'], ...
-    'VariableNames', {'Correlation', 'Min', 'Max', 'Mean', 'Median'}, ...
-    'RowNames', labels);
+correlation_table = array2table(correlations', 'VariableNames', {'Correlation'}, 'RowNames', labels);
