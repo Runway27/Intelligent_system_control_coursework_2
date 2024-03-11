@@ -3,9 +3,9 @@ load Group03.mat  %load the dataset.
 
 %Select time of day to model and define the input and output variables
 
-Xsel=X07(:,2:36);
-Ysel=X07(:,1);
-Date=Date07;
+Xsel=X33(:,2:36);
+Ysel=X33(:,1);
+Date=Date33;
 vnames=labels(2:36);
 vnames(26)={'Sun durat*pot. sol. irrad.'};   %shorten longer variable names if needed
 
@@ -147,14 +147,15 @@ ylabel('Predicted Power (MW)')
 
 % Assuming 'time' is a vector containing the time points corresponding to your test dataset
 figure; 
-plot(DateTest, YTest, 'Color', [1, 0.5, 0.8], 'LineWidth', 1); % Plot the actual load with a pink line
+plot(DateTest, YTest, 'Color', 'blue', 'LineWidth', 1); % Plot the actual load with a blue line
 hold on; % Hold the current plot
-plot(DateTest, YTestPred, 'g-', 'LineWidth', 1); % Plot the predicted load with a green line
+plot(DateTest, YTestPred, 'Color', 'red', 'LineWidth', 1); % Plot the predicted load with a red line
 title('Comparison of Actual and Predicted Load');
 xlabel('Time');
 ylabel('Load (MW)');
 legend('Actual Load', 'Predicted Load');
-grid on;  
+grid on;
+
 
 % Set x-axis ticks to every 3 months
 xticks(min(DateTest):calmonths(3):max(DateTest));
