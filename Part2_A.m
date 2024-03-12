@@ -112,6 +112,7 @@ for i = 1:num_random_configs
   % Create the NN model with two hidden layers
   NNmod = fitnet([search_range_layer1(Nh1) search_range_layer2(Nh2)],'trainlm'); 
   NNmod.trainParam.max_fail = 20;  
+  NNmod.trainParam.epochs = 100; % Adjust the number of epochs
   % Random weight initialization (optional)
   NNmod.initFcn = 'initlay';  % Uncomment to introduce randomness
   
