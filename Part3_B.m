@@ -102,6 +102,7 @@ disp(bestRMSE);
 Nh = bestNh;  % Use the optimal neuron counts found by random search
 NNmod = fitnet(Nh,'trainlm');
 NNmod.trainParam.max_fail=10; 
+NNmod.trainParam.epochs = 100; % Adjust the number of epochs
 NNmod.divideFcn='divideind'; 
 NNmod.divideParam.trainInd = 1:length(YTrain); 
 NNmod.divideParam.valInd = (length(YTrain)+1):length([YTrain ; YVal]); 
