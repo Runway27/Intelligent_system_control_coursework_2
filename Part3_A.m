@@ -1,37 +1,48 @@
-clc;
-clear;
+close all
+clear all
 
-load Group03.mat  %load the dataset.
+% Load the data
+load Group03.mat 
 
-%Select time of day to model and define the input and output variables
-
-Xsel=X07(:,2:36);
-Ysel=X07(:,1);
+% Select the relevant columns as input variables
+Xsel=X07(:,15:19);
+Y=X07(:,1);
 Date=Date07;
-Vnames=labels(2:36);
-Vnames(26)={'Sun durat*pot. sol. irrad.'};   %shorten longer variable names if needed
 
+% Normalize the input variables
+[Xnorm, norm_params] = mapstd(Xsel'); 
+Xnorm=Xnorm'; 
 
-%Normalise input data to be in the range [-1,1]  or standardised (i.e. mean=0, std=1)
-%[X, norm_params] = mapminmax(X0',-1,1); X=X';  %normalise all variables in the range [-1 1]
-[Xnorm, norm_params] = mapstd(Xsel'); Xnorm=Xnorm'; %normalise all variables to have mean 0 and std of 1
+% Create a lagged version of the dataset
+Xlagged = [NaN(1, size(Xnorm, 2)); Xnorm(1:end-1, :)];
 
-Y=Ysel;
+% Combine the current and lagged datasets
+XnormLagged = [Xnorm, Xlagged];
 
+% Remove the first row, which contains NaN due to the lag
+XnormLagged(1, :) = [];
 
-s2014=find(year(Date)==2014,1,'first');
+% Similarly, remove the first row from the output variable
+Ylagged = Y(2:end);
+
+% Split the data into training, validation, and test sets
+s2014=find(year(Date)==2014,2,'first');
+f2015=find(year(Date)==2015,1,'last');
+s2016=find(year(Date)==2016,1,'first');
 f2016=find(year(Date)==2016,1,'last');
 s2017=find(year(Date)==2017,1,'first');
 f2018=find(year(Date)==2018,1,'last');
+XTrain=XnormLagged(s2014:f2015,:);
+XVal=XnormLagged(s2016:f2016,:);
+% Adjust the indices for the test set
+s2017=find(year(Date)==2017,1,'first') - 1;
+f2018=find(year(Date)==2018,1,'last') - 1;
 
-XTrain=Xnorm(s2014:f2016,:);
-XTest=Xnorm(s2017:f2018,:);
-
-DateTrain=Date(s2014:f2016);
-DateTest=Date(s2017:f2018);
-
-YTrain=Y(s2014:f2016);
-YTest=Y(s2017:f2018);
+% Now, use these adjusted indices to create the test set
+XTest=XnormLagged(s2017:f2018,:);
+YTrain=Ylagged(s2017:f2018);
+YVal=Ylagged(s2016:f2016);
+YTest=Ylagged(s2017:f2018);
 
 %% ADALINE Model
 % Initialize weights and bias
