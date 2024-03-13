@@ -44,25 +44,34 @@ YTrain=Ylagged(s2017:f2018);
 YVal=Ylagged(s2016:f2016);
 YTest=Ylagged(s2017:f2018);
 
-% Define the range for the number of hidden neurons
-hiddenLayerSizeRange = 1:20;
+% Define the number of random configurations to try
+num_random_configs = 100;  % Adjust the number of searches
 
+% Define the range for the number of hidden neurons
+search_range_layer1 = 1:20;
+search_range_layer2 = 1:20;
 % Initialize variables to store the results
 bestRMSE = inf;
-bestHiddenLayerSize = 0;
+bestNh = [];
+bestModel = [];
+%bestHiddenLayerSize = 0;
 
 % Loop over the range of hidden layer sizes
-for Nh = hiddenLayerSizeRange
+for i = 1:num_random_configs
+      % Randomly sample neuron counts for each layer
+  Nh1 = randi(length(search_range_layer1));  % Random index within range
+  Nh2 = randi(length(search_range_layer2));  % Random index within range
     % Define the MLP model with Nh hidden neurons
-    NNmod = fitnet(Nh,'trainlm');
+    NNmod = fitnet([search_range_layer1(Nh1) search_range_layer2(Nh2)],'trainlm');
 
     % Set the training parameters
-    NNmod.trainParam.max_fail=10; 
-    NNmod.divideFcn='divideind'; 
-    NNmod.divideParam.trainInd = 1:length(YTrain); 
-    NNmod.divideParam.valInd = (length(YTrain)+1):length([YTrain ; YVal]); 
-    NNmod.divideParam.testInd = []; 
-    NNmod.trainParam.showWindow = true; 
+    NNmod.trainParam.max_fail=10;
+    NNmod.trainParam.epochs = 100; % Adjust the number of epochs
+    %NNmod.divideFcn='divideind'; 
+    %NNmod.divideParam.trainInd = 1:length(YTrain); 
+    %NNmod.divideParam.valInd = (length(YTrain)+1):length([YTrain ; YVal]); 
+    %NNmod.divideParam.testInd = []; 
+    %NNmod.trainParam.showWindow = true; 
 
     % Train the model
     [NNmodTrained, trinfo] = train(NNmod,[XTrain ; XVal]',[YTrain ; YVal]');
@@ -76,14 +85,22 @@ for Nh = hiddenLayerSizeRange
     % If this model is better than the previous best, update the best parameters
     if RMSEVal < bestRMSE
         bestRMSE = RMSEVal;
-        bestHiddenLayerSize = Nh;
+        bestNh = [search_range_layer1(Nh1) search_range_layer2(Nh2)];  % Store actual neuron counts
+        bestModel = NNmodTrained;
     end
 end
 
-fprintf('Best Model: %d hidden neurons, RMSE (Validation data) = %2.2f MW \n',bestHiddenLayerSize, bestRMSE);
+% After the search, use the best configuration and model
+disp('Optimal Neuron Configuration:');
+disp(bestNh);
+disp('Best Validation RMSE:');
+disp(bestRMSE);
+%fprintf('Best Model: %d hidden neurons, RMSE (Validation data) = %2.2f MW \n',bestHiddenLayerSize, bestRMSE);
 
 % Train the best model with the optimal number of hidden neurons
-NNmod = fitnet(bestHiddenLayerSize,'trainlm');
+% Use the best configuration (bestNh) to define the MLP model
+Nh = bestNh;  % Use the optimal neuron counts found by random search
+NNmod = fitnet(Nh,'trainlm');
 NNmod.trainParam.max_fail=10; 
 NNmod.divideFcn='divideind'; 
 NNmod.divideParam.trainInd = 1:length(YTrain); 
