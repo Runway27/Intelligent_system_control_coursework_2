@@ -1,6 +1,6 @@
 clc;
 clear;
-
+rng(123);
 load Group03  %load the dataset.
 
 %%Select time of day to model and define the input and output variables
@@ -55,7 +55,7 @@ YTest=Y(s2017:f2018);
 %Select variables as input for the linar prediction model
 % y=a1*x1+a2*x2+ ...an*xn + a0     (ao =constant offset term)
 
-SelVar=[15, 16, 17, 18];   %Specify the index numbers of the variables you wish to include in the model
+SelVar=[14, 15, 16, 17];   %Specify the index numbers of the variables you wish to include in the model
 
 SelVarNames=vnames(SelVar); %Display the names of the selected variables
 
@@ -141,7 +141,8 @@ disp(bestRMSE);
 % Use the best configuration (bestNh) to define the MLP model
 Nh = bestNh;  % Use the optimal neuron counts found by random search
 NNmod = fitnet(Nh,'trainlm'); 
-NNmod.trainParam.max_fail = 10;  
+NNmod.trainParam.max_fail = 20;  
+NNmod.trainParam.epochs = 100; % Adjust the number of epochs
 % Random weight initialization (optional)
 %NNmod.initFcn = 'initlay';  % Uncomment to introduce randomness
 
